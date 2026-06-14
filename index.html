@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ロシア語単語学習</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --navy:       #0D1B4B;
+      --navy-mid:   #1A2E7A;
+      --red:        #CC1F31;
+      --red-dark:   #A5192A;
+      --gold:       #D4A843;
+      --page-bg:    #EFF2FA;
+      --card-bg:    #FFFFFF;
+      --text:       #0D1B4B;
+      --muted:      #6B7AAA;
+      --border:     #D0D6EE;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Sans', system-ui, sans-serif;
+      background: var(--page-bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--navy);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      box-shadow: 0 2px 16px rgba(13,27,75,0.5);
+    }
+    .h-flag  { font-size: 1.35rem; }
+    .h-title { color: #fff; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.04em; }
+    .h-sub   {
+      margin-left: auto;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* ── Layout ── */
+    main {
+      flex: 1;
+      max-width: 540px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       SELECT SCREEN
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .section-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .lesson-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .lesson-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      padding: 0.95rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lesson-card:hover  { border-color: var(--navy-mid); }
+    .lesson-card.active {
+      border-color: var(--navy);
+      background: #E8ECFF;
+    }
+
+    .lc-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .lesson-card.active .lc-dot { background: var(--red); }
+
+    .lc-title { font-weight: 600; font-size: 0.92rem; flex: 1; }
+
+    .lc-badge {
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: var(--page-bg);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* Empty state */
+    .empty-msg {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding: 2rem 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.97rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      font-family: inherit;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--navy-mid);
+      box-shadow: 0 4px 18px rgba(13,27,75,0.32);
+    }
+    .btn-primary:active:not(:disabled) { transform: translateY(1px); }
+    .btn-primary:disabled {
+      background: var(--border);
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    .btn-outline {
+      display: block;
+      width: 100%;
+      padding: 0.85rem;
+      background: transparent;
+      color: var(--muted);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-outline:hover { border-color: var(--navy); color: var(--navy); }
+
+    .btn-red {
+      display: block;
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.97rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .btn-red:hover { background: var(--red-dark); box-shadow: 0 3px 14px rgba(204,31,49,0.38); }
+
+    /* Admin link */
+    .admin-link {
+      text-align: center;
+      margin-top: 1.8rem;
+      font-size: 0.75rem;
+    }
+    .admin-link a { color: var(--muted); text-decoration: none; }
+    .admin-link a:hover { text-decoration: underline; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       QUIZ SCREEN
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .quiz-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.55rem;
+    }
+    .qm-lesson {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      max-width: 65%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .qm-count {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-track {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 1.6rem;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--navy) 0%, var(--red) 100%);
+      border-radius: 2px;
+      transition: width 0.45s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* Card */
+    .word-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 28px rgba(13,27,75,0.13);
+      margin-bottom: 1.1rem;
+      min-height: 270px;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-stripe {
+      height: 5px;
+      background: linear-gradient(90deg, var(--navy) 0%, var(--red) 100%);
+      flex-shrink: 0;
+    }
+    .card-body {
+      flex: 1;
+      padding: 2rem 1.75rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .clabel {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+
+    .japanese-word {
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--navy);
+      word-break: break-all;
+    }
+
+    .reveal-sep {
+      width: 36px;
+      height: 1px;
+      background: var(--border);
+      margin: 1.4rem auto;
+      display: none;
+    }
+    .reveal-sep.show { display: block; }
+
+    .russian-block { display: none; flex-direction: column; align-items: center; }
+    .russian-block.show { display: flex; }
+
+    .russian-word {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--navy);
+      font-family: Georgia, 'Times New Roman', 'Noto Serif', serif;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .russian-word .st {
+      color: var(--red);
+      display: inline-block; /* needed for scale animation */
+    }
+    @keyframes stressPop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+    .st.pop { animation: stressPop 0.4s ease; }
+
+    /* Quiz action buttons */
+    .quiz-btns { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       RESULT SCREEN
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .result-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 3rem 1.75rem;
+      box-shadow: 0 6px 28px rgba(13,27,75,0.13);
+      text-align: center;
+    }
+    .result-icon  { font-size: 3.2rem; margin-bottom: 0.9rem; }
+    .result-title { font-size: 1.45rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+    .result-sub   { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+    .result-btns  { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-in { animation: fadeUp 0.32s ease forwards; }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <span class="h-flag">🇷🇺</span>
+  <span class="h-title">ロシア語単語学習</span>
+  <span class="h-sub">Изучение слов</span>
+</header>
+
+<main>
+
+  <!-- ━━ SELECT SCREEN ━━ -->
+  <div id="s-select" class="screen active">
+    <p class="section-eyebrow">レッスンを選択</p>
+    <div id="lesson-list" class="lesson-list"></div>
+    <button id="btn-start" class="btn-primary" disabled onclick="startQuiz()">
+      学習を開始する →
+    </button>
+    <div class="admin-link">
+      <a href="admin.html">📝 単語の追加・管理</a>
+    </div>
+  </div>
+
+  <!-- ━━ QUIZ SCREEN ━━ -->
+  <div id="s-quiz" class="screen">
+    <div class="quiz-meta">
+      <span class="qm-lesson" id="qm-lesson"></span>
+      <span class="qm-count"  id="qm-count"></span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+
+    <div class="word-card anim-in" id="word-card">
+      <div class="card-stripe"></div>
+      <div class="card-body">
+        <div class="clabel">日 本 語</div>
+        <div class="japanese-word" id="jp-word"></div>
+        <div class="reveal-sep" id="rev-sep"></div>
+        <div class="russian-block" id="ru-block">
+          <div class="clabel" style="margin-top:0">Р У С С К И Й</div>
+          <div class="russian-word" id="ru-word"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-btns">
+      <button class="btn-outline" id="btn-reveal" onclick="revealRussian()" style="border-color:var(--navy);color:var(--navy);font-weight:700">
+        ロシア語を確認する
+      </button>
+      <button class="btn-red" id="btn-next" onclick="nextWord()" style="display:none">
+        次の単語 →
+      </button>
+    </div>
+  </div>
+
+  <!-- ━━ RESULT SCREEN ━━ -->
+  <div id="s-result" class="screen">
+    <div class="result-card anim-in">
+      <div class="result-icon">🎉</div>
+      <div class="result-title">レッスン完了！</div>
+      <div class="result-sub" id="result-sub"></div>
+      <div class="result-btns">
+        <button class="btn-primary" onclick="retryQuiz()">🔄 もう一度学習する</button>
+        <button class="btn-outline" onclick="backToSelect()">← レッスン選択に戻る</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="words.js"></script>
+<script>
+/* ── Constants ── */
+const MAX_WORDS = 20;
+
+/* ── State ── */
+let selectedLesson = null;
+let quizWords      = [];
+let currentIdx     = 0;
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━
+   Data loading
+━━━━━━━━━━━━━━━━━━━━━━━━ */
+function loadData() {
+  // Prefer localStorage (admin edits), fall back to words.js
+  try {
+    const s = localStorage.getItem('russianVocabData');
+    if (s) return JSON.parse(s);
+  } catch (e) {}
+  return (typeof WORD_DATA !== 'undefined') ? WORD_DATA : { version:1, lessons:[] };
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━
+   Lesson selector
+━━━━━━━━━━━━━━━━━━━━━━━━ */
+function init() {
+  const data   = loadData();
+  const listEl = document.getElementById('lesson-list');
+  listEl.innerHTML = '';
+  selectedLesson   = null;
+  document.getElementById('btn-start').disabled = true;
+
+  if (!data.lessons || data.lessons.length === 0) {
+    listEl.innerHTML = `<div class="empty-msg">
+      レッスンがありません。<br>
+      <a href="admin.html" style="color:var(--navy)">管理ページ</a>から単語を追加してください。
+    </div>`;
+    return;
+  }
+
+  data.lessons.forEach(lesson => {
+    const el = document.createElement('div');
+    el.className = 'lesson-card';
+    el.innerHTML = `
+      <div class="lc-dot"></div>
+      <span class="lc-title">${escHtml(lesson.title)}</span>
+      <span class="lc-badge">${lesson.words.length} 語</span>
+    `;
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.lesson-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      selectedLesson = lesson;
+      document.getElementById('btn-start').disabled = false;
+    });
+    listEl.appendChild(el);
+  });
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━
+   Quiz logic
+━━━━━━━━━━━━━━━━━━━━━━━━ */
+function startQuiz() {
+  if (!selectedLesson) return;
+  quizWords  = shuffle(selectedLesson.words).slice(0, MAX_WORDS);
+  currentIdx = 0;
+  document.getElementById('qm-lesson').textContent = selectedLesson.title;
+  showScreen('s-quiz');
+  renderWord();
+}
+
+function renderWord() {
+  const word  = quizWords[currentIdx];
+  const total = quizWords.length;
+
+  // Progress
+  document.getElementById('qm-count').textContent = `${currentIdx + 1} / ${total}`;
+  document.getElementById('progress-fill').style.width = `${(currentIdx / total) * 100}%`;
+
+  // Japanese
+  document.getElementById('jp-word').textContent = word.japanese;
+
+  // Hide Russian section
+  document.getElementById('rev-sep').classList.remove('show');
+  document.getElementById('ru-block').classList.remove('show');
+  document.getElementById('ru-word').innerHTML = '';
+
+  // Buttons
+  const btnReveal = document.getElementById('btn-reveal');
+  const btnNext   = document.getElementById('btn-next');
+  btnReveal.disabled = false;
+  btnReveal.style.display = 'block';
+  btnNext.style.display   = 'none';
+  btnNext.textContent     = currentIdx === total - 1 ? '✅ 完了する' : '次の単語 →';
+
+  // Animate card
+  const card = document.getElementById('word-card');
+  card.classList.remove('anim-in');
+  void card.offsetWidth; // reflow
+  card.classList.add('anim-in');
+}
+
+function revealRussian() {
+  const word  = quizWords[currentIdx];
+  const total = quizWords.length;
+
+  document.getElementById('ru-word').innerHTML = markStress(word.russian);
+  document.getElementById('rev-sep').classList.add('show');
+  document.getElementById('ru-block').classList.add('show');
+
+  // Animate stressed vowels
+  setTimeout(() => {
+    document.querySelectorAll('#ru-word .st').forEach(el => {
+      el.classList.add('pop');
+      el.addEventListener('animationend', () => el.classList.remove('pop'), { once: true });
+    });
+  }, 80);
+
+  document.getElementById('progress-fill').style.width = `${((currentIdx + 1) / total) * 100}%`;
+  document.getElementById('btn-reveal').style.display  = 'none';
+  document.getElementById('btn-next').style.display    = 'block';
+}
+
+function nextWord() {
+  currentIdx++;
+  if (currentIdx >= quizWords.length) showResult();
+  else renderWord();
+}
+
+function showResult() {
+  document.getElementById('result-sub').textContent =
+    `${selectedLesson.title} の ${quizWords.length} 語を学習しました！`;
+  document.getElementById('progress-fill').style.width = '100%';
+  showScreen('s-result');
+}
+
+function retryQuiz() {
+  quizWords  = shuffle(selectedLesson.words).slice(0, MAX_WORDS);
+  currentIdx = 0;
+  showScreen('s-quiz');
+  renderWord();
+}
+
+function backToSelect() {
+  showScreen('s-select');
+  init();
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━
+   Utilities
+━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/** Highlight stressed vowel: wrap char + U+0301 (or ё/Ё) in <span class="st"> */
+function markStress(text) {
+  let out = '', i = 0;
+  while (i < text.length) {
+    const ch   = text[i];
+    const next = text[i + 1] ?? '';
+    if (next === '\u0301') {
+      out += `<span class="st">${escHtml(ch)}\u0301</span>`;
+      i += 2;
+    } else if (ch === '\u0451' || ch === '\u0401') { // ё Ё
+      out += `<span class="st">${ch}</span>`;
+      i++;
+    } else {
+      out += escHtml(ch);
+      i++;
+    }
+  }
+  return out;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ── Boot ── */
+init();
+</script>
+</body>
+</html>
