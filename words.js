@@ -255,7 +255,7 @@ const WORD_DATA = {
         { japanese: "英語で,英国風に", russian: "по-англи\u0301йски" },
         { japanese: "ロシア語で,ロシア風に", russian: "по-ру\u0301сски" },
         { japanese: "日本語で,日本風に", russian: "по-япо\u0301нски" },
-        { japanese: "講義室,聴講者", russian: "аудито/u0301рия" },
+        { japanese: "講義室,聴講者", russian: "аудито\u0301рия" },
         { japanese: "アメリカの,アメリカ人の", russian: "америка\u0301нский" },
         { japanese: "イギリスの,イギリス人の", russian: "англи\u0301йский" },
         { japanese: "日本の,日本人の", russian: "япо\u0301нский" },
