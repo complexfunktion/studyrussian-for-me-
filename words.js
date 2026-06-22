@@ -227,6 +227,43 @@ const WORD_DATA = {
         { japanese: "〜を問う", russian: "спра\u0301шивать" },
         { japanese: "…も…も", russian: "и, и…" }
       ]
+    },
+    {
+      id: 8,
+      title: "Урок 6",
+      words: [
+        { japanese: "棚", russian: "по\u0301лка" },
+        { japanese: "ロシアの,ロシア人の", russian: "ру\u0301сский" },
+        { japanese: "ダイニングルーム,食堂", russian: "столо\u0301вая" },
+        { japanese: "舌", russian: "язы\u0301к" },
+        { japanese: "大きい", russian: "большо\u0301й" },
+        { japanese: "悪い", russian: "плохо\u0301й" },
+        { japanese: "話す", russian: "говори\u0301ть" },
+        { japanese: "学ぶ,研究する", russian: "изуча\u0301ть" },
+        { japanese: "横になっている", russian: "лежа\u0301ть" },
+        { japanese: "顔を出している,向いている", russian: "смотре\u0301ть" },
+        { japanese: "擁護する,主張する", russian: "стоя\u0301ть" },
+        { japanese: "~の中へ,~を,~になる,~を通じ", russian: "в" },
+        { japanese: "~へ,~に", russian: "на" },
+        { japanese: "~に,~の側に", russian: "о" },
+        { japanese: "テレビ", russian: "телеви\u0301зор" },
+        { japanese: "映画", russian: "фильм" },
+        { japanese: "夏に", russian: "ле\u0301том" },
+        { japanese: "非常に", russian: "о\u0301чень" },
+        { japanese: "悪く,悪い", russian: "пло\u0301хо" },
+        { japanese: "休憩する", russian: "отдыха\u0301ть" },
+        { japanese: "英語で,英国風に", russian: "по-англи\u0301йски" },
+        { japanese: "ロシア語で,ロシア風に", russian: "по-ру\u0301сски" },
+        { japanese: "日本語で,日本風に", russian: "по-япо\u0301нски" },
+        { japanese: "講義室,聴講者", russian: "аудито/u0301рия" },
+        { japanese: "アメリカの,アメリカ人の", russian: "америка\u0301нский" },
+        { japanese: "イギリスの,イギリス人の", russian: "англи\u0301йский" },
+        { japanese: "日本の,日本人の", russian: "япо\u0301нский" },
+        { japanese: "少し", russian: "немно\u0301го" },
+        { japanese: "既に", russian: "уже\u0301" },
+        { japanese: "会話する", russian: "разгова\u0301ривать" }
+      ]
     }
+
   ]
 };
