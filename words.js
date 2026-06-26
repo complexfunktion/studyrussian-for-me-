@@ -235,7 +235,7 @@ const WORD_DATA = {
         { japanese: "棚", russian: "по\u0301лка" },
         { japanese: "ロシアの,ロシア人の", russian: "ру\u0301сский" },
         { japanese: "ダイニングルーム,食堂", russian: "столо\u0301вая" },
-        { japanese: "舌", russian: "язы\u0301к" },
+        { japanese: "舌,言語", russian: "язы\u0301к" },
         { japanese: "大きい", russian: "большо\u0301й" },
         { japanese: "悪い", russian: "плохо\u0301й" },
         { japanese: "話す", russian: "говори\u0301ть" },
