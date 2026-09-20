@@ -336,7 +336,7 @@ const WORD_DATA = {
         { japanese: "娘", russian: "до\u0301чка" },
         { japanese: "夫,成年男子,活物家", russian: "муж" }
       ]
-    }
+    },
     {
       id: 10,
       title: "Урок 8",
