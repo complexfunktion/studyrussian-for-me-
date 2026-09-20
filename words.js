@@ -306,7 +306,7 @@ const WORD_DATA = {
         { japanese: "更に,未だ", russian: "ещё" },
         { japanese: "〜を話す", russian: "расска\u0301зывать" },
         { japanese: "図書館,書庫", russian: "библиоте\u0301ка" },
-        { japanese: "毛、髪", russian: "во\u0301лос" },
+        { japanese: "毛,髪", russian: "во\u0301лос" },
         { japanese: "声", russian: "го\u0301лос" },
         { japanese: "機械,機構", russian: "маши\u0301на" },
         { japanese: "大学", russian: "университе\u0301т" },
@@ -335,6 +335,43 @@ const WORD_DATA = {
         { japanese: "少女", russian: "де\u0301вочка" },
         { japanese: "娘", russian: "до\u0301чка" },
         { japanese: "夫,成年男子,活物家", russian: "муж" }
+      ]
+    }
+    {
+      id: 10,
+      title: "Урок 8",
+      words: [
+        { japanese: "バス", russian: "авто\u0301бус" },
+        { japanese: "牛乳", russian: "молоко\u0301" },
+        { japanese: "列車,行列", russian: "по\u0301езд" },
+        { japanese: "姓,名字,家柄", russian: "фами\u0301лия" },
+        { japanese: "茶,茶会", russian: "чай" },
+        { japanese: "～のように,〜によれば,〜として,ごく普通の", russian: "как" },
+        { japanese: "どこへ,何のために,〜したところの,どこかに,はるかに", russian: "куда\u0301" },
+        { japanese: "乗って行く,乗って来る,走る", russian: "е\u0301хать" },
+        { japanese: "生きる,暮らす,住む", russian: "жить" },
+        { japanese: "呼ぶ,招く", russian: "звать" },
+        { japanese: "行く,来る,進む,出掛ける,届く", russian: "идти\u0301" },
+        { japanese: "書く,手紙を出す", russian: "писа\u0301ть" },
+        { japanese: "飲む,乾杯する", russian: "пить" },
+        { japanese: "建築する,組織する,考え出す,作図する", russian: "стро\u0301ить" },
+        { japanese: "コーヒー(男)", russian: "ко\u0301фе" },
+        { japanese: "文学,文献", russian: "литерату\u0301ра" },
+        { japanese: "論文,項目,等級,処分", russian: "статья\u0301" },
+        { japanese: "会う,出迎える,応じる,遭遇する", russian: "встреча\u0301ть" },
+        { japanese: "俳優,役者", russian: "актёр" },
+        { japanese: "映画館,滑稽な", russian: "кино\u0301" },
+        { japanese: "活動,労働,職,工事,作品", russian: "рабо\u0301та" },
+        { japanese: "知られている,有名な,多くの", russian: "изве\u0301стный" },
+        { japanese: "中国の,中国人の", russian: "кита\u0301йский" },
+        { japanese: "大いに,沢山の,ずっと,高々", russian: "мно\u0301го" },
+        { japanese: "遅い,遅く", russian: "по\u0301здно" },
+        { japanese: "より早く,より前に,まず,かつて", russian: "ра\u0301ньше" },
+        { japanese: "遊びをする,演奏する,上演する,演じる", russian: "игра\u0301ть" },
+        { japanese: "こんにちは,おはよう", russian: "здра\u0301вствуйте" },
+        { japanese: "(тЫに対するЗдравствуйте)", russian: "здра\u0301вствуй" },
+        { japanese: "ではまた明日", russian: "до за\u0301втра" },
+        { japanese: "さようなら", russian: "до свида\u0301ния" }
       ]
     }
 
